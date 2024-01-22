@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using VillaProject.Infrastructure.Data;
+
 namespace VillaProject.Web
 {
     public class Program
@@ -8,6 +11,9 @@ namespace VillaProject.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            //ApplicationDbContext applicationDbContext = new(); not needed in .NET Core
+            builder.Services.AddDbContext<ApplicationDbContext>(option =>
+            option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
