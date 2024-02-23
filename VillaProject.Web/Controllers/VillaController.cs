@@ -1,20 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using VillaProject.Application.Common.Interfaces;
+using VillaProject.Application.Services.Interface;
 using VillaProject.Domain.Entities;
 using VillaProject.Infrastructure.Data;
 
 namespace VillaProject.Web.Controllers
 {
+    [Authorize]
     public class VillaController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IVillaService _villaService;
 
-        public VillaController(ApplicationDbContext db)
+        public VillaController(IVillaService villaService)
         {
-            _db = db;
+            _villaService = villaService;
         }
         public IActionResult Index()
         {
-            var villas = _db.Villas.ToList();
+            var villas = _villaService.GetAllVillas();
             return View(villas);
         }
         public IActionResult Create()
@@ -24,14 +28,13 @@ namespace VillaProject.Web.Controllers
         [HttpPost]
         public IActionResult Create(Villa obj)
         {
-            if(obj.Name == obj.Description)
+            if (obj.Name == obj.Description)
             {
                 ModelState.AddModelError("name", "The description can't exactly match the Name.");
             }
             if (ModelState.IsValid)
             {
-                _db.Villas.Add(obj);
-                _db.SaveChanges();
+                _villaService.CreateVilla(obj);
                 TempData["success"] = "The villa has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
@@ -39,10 +42,10 @@ namespace VillaProject.Web.Controllers
         }
         public IActionResult Update(int villaId)
         {
-            Villa? obj = _db.Villas.FirstOrDefault(x => x.Id == villaId);
-            if(obj == null)
+            Villa? obj = _villaService.GetVillaById(villaId);
+            if (obj == null)
             {
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
             return View(obj);
         }
@@ -50,9 +53,8 @@ namespace VillaProject.Web.Controllers
         public IActionResult Update(Villa obj)
         {
             if (ModelState.IsValid && obj.Id > 0)
-            {
-                _db.Villas.Update(obj);
-                _db.SaveChanges();
+            {            
+                _villaService.UpdateVilla(obj);
                 TempData["success"] = "The villa has been updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
@@ -60,7 +62,7 @@ namespace VillaProject.Web.Controllers
         }
         public IActionResult Delete(int villaId)
         {
-            Villa? obj = _db.Villas.FirstOrDefault(x => x.Id == villaId);
+            Villa? obj = _villaService.GetVillaById(villaId);
             if (obj is null) //потому что == может быть overloaded, which is not common to see ia a code
             {
                 return RedirectToAction("Error", "Home");
@@ -70,15 +72,16 @@ namespace VillaProject.Web.Controllers
         [HttpPost]
         public IActionResult Delete(Villa obj)
         {
-            Villa? objFromDb = _db.Villas.FirstOrDefault(u=>u.Id == obj.Id);
-            if (objFromDb is not null)
+            bool deleted = _villaService.DeleteVilla(obj.Id);
+            if (deleted)
             {
-                _db.Villas.Remove(objFromDb);
-                _db.SaveChanges();
                 TempData["success"] = "The villa has been deleted successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            TempData["error"] = "The villa could not be deleted.";
+            else
+            {
+                TempData["error"] = "The villa could not be deleted.";
+            }
             return View();
         }
     }

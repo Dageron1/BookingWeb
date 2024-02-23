@@ -3,13 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillaProject.Web", "VillaProject.Web\VillaProject.Web.csproj", "{0FD3D53A-D740-4C84-A52A-DDF0D3254192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VillaProject.Web", "VillaProject.Web\VillaProject.Web.csproj", "{0FD3D53A-D740-4C84-A52A-DDF0D3254192}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillaProject.Domain", "VillaProject.Domain\VillaProject.Domain.csproj", "{777DCE2B-F50C-4047-91A7-9E5FE8DE58F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VillaProject.Domain", "VillaProject.Domain\VillaProject.Domain.csproj", "{777DCE2B-F50C-4047-91A7-9E5FE8DE58F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillaProject.Application", "VillaProject.Application\VillaProject.Application.csproj", "{384E87C8-B458-45E7-93FC-77CBBA196F19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VillaProject.Application", "VillaProject.Application\VillaProject.Application.csproj", "{384E87C8-B458-45E7-93FC-77CBBA196F19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillaProject.Infrastructure", "VillaProject.Infrastructure\VillaProject.Infrastructure.csproj", "{01C34C32-1BBE-4AEF-A098-0E1CB7E88F71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VillaProject.Infrastructure", "VillaProject.Infrastructure\VillaProject.Infrastructure.csproj", "{01C34C32-1BBE-4AEF-A098-0E1CB7E88F71}"
+	ProjectSection(ProjectDependencies) = postProject
+		{384E87C8-B458-45E7-93FC-77CBBA196F19} = {384E87C8-B458-45E7-93FC-77CBBA196F19}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

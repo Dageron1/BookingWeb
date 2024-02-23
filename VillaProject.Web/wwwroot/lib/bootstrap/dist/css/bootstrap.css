@@ -5408,16 +5408,22 @@ textarea.form-control-lg {
 }
 
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1055;
-  display: none;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  outline: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1055;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-x: unset;
+    overflow-y: scroll !important;
+    outline: 0;
+    overflow: scroll;
+    padding-right: 0 !important;
+}
+.modal-open {
+    overflow: scroll;
+    padding-right: 17px !important;
 }
 
 .modal-dialog {
@@ -5471,6 +5477,7 @@ textarea.form-control-lg {
   border-radius: 0.3rem;
   outline: 0;
 }
+
 
 .modal-backdrop {
   position: fixed;
@@ -11219,3 +11226,4 @@ textarea.form-control-lg {
 }
 
 /*# sourceMappingURL=bootstrap.css.map */
+
