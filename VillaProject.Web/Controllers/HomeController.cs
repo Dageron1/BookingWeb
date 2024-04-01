@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Syncfusion.EJ2.Calendars;
 using Syncfusion.Presentation;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Numerics;
 using VillaProject.Application.Common.Interfaces;
@@ -11,6 +14,12 @@ using VillaProject.Web.Models.ViewModels;
 
 namespace VillaProject.Web.Controllers
 {
+    public class DateRange
+    {
+        [Required(ErrorMessage = "Please enter the value")]
+        public DateOnly[] value { get; set; }
+
+    }
     public class HomeController : Controller
     {
         private readonly IVillaService _villaService;
@@ -21,35 +30,68 @@ namespace VillaProject.Web.Controllers
             _villaService = villaService;
             _webHostEnvironment = webHostEnvironment;
         }
+        DateRange DateRangeValue = new DateRange();
 
         public IActionResult Index()
         {
+            var min = DateOnly.FromDateTime(DateTime.Now);
+            var max = min.AddMonths(1);
+
+            DateRangeValue.value = new DateOnly[] { min, max };
             HomeVM homeVM = new()
             {
                 VillaList = _villaService.GetAllVillas(),
                 Nights = 1,
-                CheckInDate = DateOnly.FromDateTime(DateTime.Now)
+                CheckInDate = DateOnly.FromDateTime(DateTime.Now),
+                dateRange = null,
             };
+
             return View(homeVM);
         }
         [HttpPost]
-        public IActionResult GetVillasByDate(int nights, DateOnly checkInDate)
-        {        
-            HomeVM homeVM = new()
+        public IActionResult GetVillasByDate(DateRange model) //here I want to somehow get data from POST Ajax
+        {
+            if (model.value.Length != 2)
             {
-                CheckInDate = checkInDate,
-                VillaList = _villaService.GetVillasAvailabilityByDate(nights, checkInDate),
-                Nights = nights
-            };
+                DateRangeValue.value = model.value;
 
-            //возвращает именно частичное представление. 
-            return PartialView("_VillaList", homeVM);
+                var stratDate = DateOnly.FromDateTime(DateTime.Now);
+                var endDate = DateOnly.FromDateTime(DateTime.Now).AddDays(1);
+                var nightsCalc = endDate.DayNumber - stratDate.DayNumber + 1;
+                HomeVM homeVM = new()
+                {
+                    CheckInDate = stratDate,
+                    VillaList = _villaService.GetVillasAvailabilityByDate(nightsCalc, stratDate),
+                    Nights = nightsCalc,
+                };
+                return PartialView("_VillaList", homeVM);
+            }
+            else
+            {
+                DateRangeValue.value = model.value;
+
+                var stratDate = model.value[0];
+                var endDate = model.value[1];
+                var nightsCalc = endDate.DayNumber - stratDate.DayNumber + 1;
+                HomeVM homeVM = new()
+                {
+                    CheckInDate = stratDate,
+                    VillaList = _villaService.GetVillasAvailabilityByDate(nightsCalc, stratDate),
+                    Nights = nightsCalc,
+                };
+                return PartialView("_VillaList", homeVM);
+            }
+            
+
+            
+           
         }
+
         [HttpPost]
         public IActionResult GeneratePPTExprot(int id)
         {
             var villa = _villaService.GetVillaById(id);
-            if(villa is null)
+            if (villa is null)
             {
                 return RedirectToAction(nameof(Error));
             }
@@ -86,7 +128,7 @@ namespace VillaProject.Web.Controllers
             }
 
             shape = slide.Shapes.FirstOrDefault(u => u.ShapeName == "txtVillaAmenitiesHeading") as IShape;
-            if(shape is not null)
+            if (shape is not null)
             {
                 List<string> listItems = villa.VillaAmenity.Select(x => x.Name).ToList();
 
@@ -112,10 +154,10 @@ namespace VillaProject.Web.Controllers
                 string imageUrl;
                 try
                 {
-                    imageUrl = string.Format("{0}{1}", basePath, villa.ImageUrl);
+                    imageUrl = string.Format("{0}{1}", basePath, villa.VillaImages.FirstOrDefault());
                     imageData = System.IO.File.ReadAllBytes(imageUrl);
                 }
-                catch(Exception) 
+                catch (Exception)
                 {
                     imageUrl = string.Format("{0}{1}", basePath, "/images/placeholder.png");
                     imageData = System.IO.File.ReadAllBytes(imageUrl);
@@ -137,7 +179,7 @@ namespace VillaProject.Web.Controllers
             return View();
         }
 
-        
+
         public IActionResult Error()
         {
             return View();

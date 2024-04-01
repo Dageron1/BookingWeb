@@ -5,13 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - VillaProject.Web</title>
-    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/> *@
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/font-awesome.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="~/font-awesome/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    @* эти строка создается если есть стили в scoped ccs files например _Layout.cshtml.css \/ *@
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.1.35/material.css" />
+    @* <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.1.35/fluent.css" /> *@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/VillaProject.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="~/css/spinner.css" />
@@ -20,7 +22,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow">
+        <nav class="navbar navbar-sticky bg-primary navbar-expand-sm navbar-toggleable-sm navbar-dark box-shadow fixed-top fw-bold">
             <div class="container-fluid d-flex justify-content-between">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/resort.png" style="width:35px" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu"
@@ -34,45 +36,45 @@
     <div class="container-fluid">
         <div class="loading spinner" style="display:none"></div>
         <div class="row">
-            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
-                <div class="position-static pt-3">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse" style="background-color:#f8f9fd;">
+                <div class="position-static pt-3 mt-6">
                     <ul class="navbar-nav">
                         <li>
-                            <div class="text-muted small fw-bold text-uppercase px-3">
+                            <div class="text-black small fw-bold text-uppercase px-3">
                                 Menu
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                            <a class="nav-link" asp-controller="Dashboard" asp-action="Index" style="color:purple;">
                                 <span class="me-2"><i class="bi bi-speedometer2"></i></span>
                                 <span>Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <div class="text-muted small fw-bold text-uppercase px-3 mt-2">
+                            <div class="text-black fw-bold small text-uppercase px-3 mt-2">
                                 Content Management
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Villa" asp-action="Index">
+                            <a class="nav-link text-black" asp-controller="Villa" asp-action="Index">
                                 <span class="me-2"><i class="bi bi-house-door"></i></span>
                                 <span>Villa</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="VillaNumber" asp-action="Index">
+                            <a class="nav-link  text-black" asp-controller="VillaNumber" asp-action="Index">
                                 <span class="me-2"><i class="bi bi-list-ol"></i></span>
                                     <span>VillaNumber</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Amenity" asp-action="Index">
+                            <a class="nav-link  text-black" asp-controller="Amenity" asp-action="Index">
                                 <span class="me-2"><i class="bi bi-building"></i></span>
-                                    <span>Amenity</span>
+                                    <span>Facilities</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Booking" asp-action="Index" asp-action="Index" asp-route-status="@SD.StatusApproved">
+                            <a class="nav-link  text-black" asp-controller="Booking" asp-action="Index" asp-action="Index" asp-route-status="@SD.StatusApproved">
                                 <span class="me-2"><i class="bi bi-journal-plus"></i></span>
                                     <span>Booking</span>
                             </a>
@@ -80,7 +82,7 @@
                     </ul>
                 </div>
             </nav>
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <main class="col-md-9 ms-sm-auto col-lg-10">
                 <div class="d-flex justify-content-around flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 w-100">
 
                 </div>
@@ -90,9 +92,65 @@
         </div>
     </div>
 
-    <footer class="border-top footer bg-dark text-muted">
-        <div class="container text-center">
-            Made with <i class="bi bi-heart-fill"> by Dageron </i> <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="bg-light text-center text-white mt-7">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <!-- Facebook -->
+                <a class="btn btn-primary btn-floating border-0 m-1"
+                   style="background-color: #3b5998;"
+                   href="#!"
+                   role="button">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+
+                <!-- Twitter -->
+                <a class="btn btn-primary btn-floating rounded-circle border-0 m-1"
+                   style="background-color: #55acee;"
+                   href="#!"
+                   role="button">
+                    <i class="fab fa-twitter"></i>
+                </a>
+
+                <!-- Google -->
+                <a class="btn btn-primary btn-floating rounded-circle border-0 m-1"
+                   style="background-color: #dd4b39;"
+                   href="#!"
+                   role="button">
+                    <i class="fab fa-google"></i>
+                </a>
+
+                <!-- Instagram -->
+                <a class="btn btn-primary btn-floating rounded-circle border-0 m-1"
+                   style="background-color: #ac2bac;"
+                   href="#!"
+                   role="button">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <!-- Linkedin -->
+                <a class="btn btn-primary btn-floating rounded-circle border-0 m-1"
+                   style="background-color: #0082ca;"
+                   href="#!"
+                   role="button">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <!-- Github -->
+                <a class="btn btn-primary btn-floating rounded-circle border-0 m-1"
+                   style="background-color: #333333;"
+                   href="#!"
+                   role="button">
+                    <i class="fab fa-github"></i>
+                </a>
+            </section>
+            <!-- Section: Social media -->
+        </div>
+        <!-- Grid container -->
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2024 Copyright:
+            <a class="text-white" href="#">Dageron.com</a>
         </div>
     </footer>
     @* В продакшене лучше использовать скаченные файлы а не ссылки как с бутстрапом Добавить их в wwwroot в нужны папки *@
@@ -103,7 +161,11 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @* <script src="~/js/jquery.unobtrusive-ajax.min.js"></script> *@
     <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.syncfusion.com/ej2/25.1.35/dist/ej2.min.js"></script>
     <script src="~/js/apexcharts.js"></script>
+    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts3", required: false)
+    <ejs-scripts></ejs-scripts>
 </body>
 </html>

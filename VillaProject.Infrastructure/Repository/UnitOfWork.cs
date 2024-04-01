@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VillaProject.Application.Common.Interfaces;
+using VillaProject.Application.Services.Interface;
 using VillaProject.Infrastructure.Data;
 
 namespace VillaProject.Infrastructure.Repository
@@ -16,6 +17,10 @@ namespace VillaProject.Infrastructure.Repository
         public IAmenityRepository Amenity { get; private set;}
         public IBookingRepository Booking { get; private set;}
         public IApplicationUserRepository User { get; private set;}
+        public IVillaImageRepository VillaImage { get; private set;}
+        public IFacilityRepository Facility { get; private set;}
+        public ICategoryRepository Category { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -26,6 +31,9 @@ namespace VillaProject.Infrastructure.Repository
             Amenity = new AmenityRepository(_db);
             Booking = new BookingRepository(_db);
             User = new ApplicationUserRepository(_db);
+            VillaImage = new VillaImageRepository(_db);
+            Facility = new FacilityRepository(_db);
+            Category = new CategoryRepository(_db);
         }
         public void Save()
         {

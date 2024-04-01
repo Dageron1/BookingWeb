@@ -1,73 +1,212 @@
-﻿@model Villa
+﻿@model VillaVM
 
-<div class="w-100 card border-0 p-4">
-    <div class="card-header bg-success bg-gradient m-lg-0 py-4">
+<div class="border-0 p-5 mt-4">
+    <div class="m-lg-0 py-0">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Update Villa</h2>
+                <h2 class="text-black py-2">Update Villa</h2>
             </div>
         </div>
     </div>
-    <div class="card-body border p-4">
-        <form method="post" class="row" enctype="multipart/form-data">
-            <input asp-for="Id" hidden />
-            <div class="col-10">
-                <div class="p-3">
+    <div class="col-12 card-body rounded-3 border-0 shadow p-4" style="background-color: #fff;">
+        <div class="row pt-3">
+            <div class="col-md-10">
+                <form method="post" class="row" enctype="multipart/form-data">
+                    <input asp-for="Villa.Id" hidden />
+                    @* <input asp-for="Amenity.Id" hidden />
+                    <input asp-for="Amenity.VillaId" hidden /> *@
                     @*  <div asp-validation-summary="All"></div> *@ @* показываем кастомную валидацию *@
-                    <div class="form-floating py-1 col-12">
-                        <input asp-for="@Model.Name" class="form-control border shadow" />
-                        <label asp-for="Name" class="ms-2"></label>
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="form-floating py-1 mb-1 col-12">
+                        <input asp-for="Villa.Name" class="form-control border shadow-sm" />
+                        <label asp-for="Villa.Name" class="ms-2"></label>
+                        <span asp-validation-for="Villa.Name" class="text-danger"></span>
                     </div>
-                    <div class="form-floating py-1 col-12">
-                        <input asp-for="Description" class="form-control border shadow" />
-                        <label asp-for="Description" class="ms-2"></label>
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                    <div class="form-floating py-1 mb-1 col-12">
+                        <input asp-for="Villa.Description" class="form-control border shadow-sm" />
+                        <label asp-for="Villa.Description" class="ms-2"></label>
+                        <span asp-validation-for="Villa.Description" class="text-danger"></span>
                     </div>
-                    <div class="form-floating py-1 col-12">
-                        <input asp-for="Price" class="form-control border shadow" />
-                        <label asp-for="Price" class="ms-2"></label>
-                        <span asp-validation-for="Price" class="text-danger"></span>
+                    <div class="form-floating py-1 col-md-3">
+                        <input type="file" name="files" class="form-control border-1 shadow-sm" multiple />
+                        <label asp-for="Villa.VillaImages" class="ms-2">Images</label>
+                        <span asp-validation-for="Villa.VillaImages" class="text-danger"></span>
                     </div>
-                    <div class="form-floating py-1 col-12">
-                        <input asp-for="Sqft" class="form-control border shadow" />
-                        <label asp-for="Sqft" class="ms-2"></label>
-                        <span asp-validation-for="Sqft" class="text-danger"></span>
+                    <div class="form-floating py-1 col-md-3">
+                        <input asp-for="Villa.Price" class="form-control border shadow-sm" />
+                        <label asp-for="Villa.Price" class="ms-2"></label>
+                        <span asp-validation-for="Villa.Price" class="text-danger"></span>
                     </div>
-                    <div class="form-floating py-1 col-12">
-                        <input asp-for="Occupancy" class="form-control border shadow" />
-                        <label asp-for="Occupancy" class="ms-2"></label>
-                        <span asp-validation-for="Occupancy" class="text-danger"></span>
+                    <div class="form-floating py-1 col-md-3">
+                        <input asp-for="Villa.Sqft" class="form-control border shadow-sm" />
+                        <label asp-for="Villa.Sqft" class="ms-2"></label>
+                        <span asp-validation-for="Villa.Sqft" class="text-danger"></span>
                     </div>
-                    <div class="form-floating py-1 col-12">
-                        <input asp-for="Image" class="form-control border shadow" />
-                        @* для того чтобы при обновлении удалить старую картинку. Если не обновлена картинка чтобы осталась старая *@
-                        <input asp-for="ImageUrl" hidden class="form-control border shadow" />
-                        <label asp-for="ImageUrl" class="ms-2"></label>
-                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    <div class="form-floating py-1 col-md-3">
+                        <input asp-for="Villa.Occupancy" class="form-control border shadow-sm" />
+                        <label asp-for="Villa.Occupancy" class="ms-2"></label>
+                        <span asp-validation-for="Villa.Occupancy" class="text-danger"></span>
                     </div>
-                    <div class="row pt-2">
-                        <div class="col-6 col-md-3">
-                            <button type="submit" class="btn btn-success w-100">
-                                <i class="bi bi-check-circle"></i> Update
-                            </button>
+                    <div class="container">
+                        <div class="row col-md-12 mt-4 d-flex">
+                            <div class="card ms-3 mx-3 col-md-3">
+                                <div class="card-title mt-1 text-center fw-bold">
+                                    <img width="25" height="25" src="https://img.icons8.com/windows/32/cooking.png" alt="cooking" /> Cooking
+                                </div>
+                                <div class="card-body">
+                                    @for (int i = 0; i < Model.Facilities.Count; i++)
+                                    {
+                                        if (Model.Facilities[i].Category == "Cooking")
+                                        {
+                                            <li class="list-unstyled">
+                                                @* @Html.HiddenFor(x => x.Villa.Facilities[i].Id) *@
+                                                @Html.HiddenFor(x => x.Facilities[i].Id)
+                                                @Html.CheckBoxFor(u => Model.Facilities[i].Selected)
+                                                <label class="ms-2"><img width="20" height="20" src="@Model.Facilities[i].Logo" alt="microwave" /> @Model.Facilities[i].Name </label>
+                                            </li>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="card col-md-3 mx-3">
+                                <div class="card-title mt-1 text-center fw-bold">
+                                    <img width="25" height="25" src="https://img.icons8.com/pastel-glyph/64/fast-food--v2.png" alt="fast-food--v2" /> Food & Eat
+                                </div>
+                                <div class="card-body">
+                                    @for (int i = 0; i < Model.Facilities.Count; i++)
+                                    {
+                                        if (Model.Facilities[i].Category == "Food")
+                                        {
+                                            <li class="list-unstyled">
+                                                @* @Html.HiddenFor(x => x.Villa.Facilities[i].Id) *@
+                                                @Html.HiddenFor(x => x.Facilities[i].Id)
+                                                @Html.CheckBoxFor(u => Model.Facilities[i].Selected)
+                                                <label class="ms-2"><img width="20" height="20" src="@Model.Facilities[i].Logo" alt="microwave" /> @Model.Facilities[i].Name </label>
+
+                                            </li>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="card col-md-3 mx-3">
+                                <div class="card-title mt-1 text-center fw-bold">
+                                    <img width="25" height="25" src="https://img.icons8.com/ios/50/internet--v1.png" alt="internet--v1" /> Internet
+                                </div>
+                                <div class="card-body">
+                                    @for (int i = 0; i < Model.Facilities.Count; i++)
+                                    {
+                                        if (Model.Facilities[i].Category == "Internet")
+                                        {
+                                            <li class="list-unstyled">
+                                                @* @Html.HiddenFor(x => x.Villa.Facilities[i].Id) *@
+                                                @Html.HiddenFor(x => x.Facilities[i].Id)
+                                                @Html.CheckBoxFor(u => Model.Facilities[i].Selected)
+                                                <label class="ms-2"><img width="20" height="20" src="@Model.Facilities[i].Logo" alt="microwave" /> @Model.Facilities[i].Name </label>
+
+                                            </li>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            
                         </div>
+                        <div class="row col-md-12 mt-4 d-flex">
+                            <div class="card col-md-3 mx-3">
+                                <div class="card-title mt-1 text-center fw-bold">
+                                    <img width="25" height="25" src="https://img.icons8.com/ios/50/mountain-city.png" alt="mountain-city" /> View
+                                </div>
+                                <div class="card-body">
+                                    @for (int i = 0; i < Model.Facilities.Count; i++)
+                                    {
+                                        if (Model.Facilities[i].Category == "View")
+                                        {
+                                            <li class="list-unstyled">
+                                                @* @Html.HiddenFor(x => x.Villa.Facilities[i].Id) *@
+                                                @Html.HiddenFor(x => x.Facilities[i].Id)
+                                                @Html.CheckBoxFor(u => Model.Facilities[i].Selected)
+                                                <label class="ms-2"><img width="20" height="20" src="@Model.Facilities[i].Logo" alt="microwave" /> @Model.Facilities[i].Name </label>
+                                            </li>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="card col-md-3 mx-3">
+                                <div class="card-title mt-1 text-center fw-bold">
+                                    <img width="25" height="25" src="https://img.icons8.com/ios/50/place-marker--v1.png" alt="place-marker--v1" /> Territory
+                                </div>
+                                <div class="card-body">
+                                    @for (int i = 0; i < Model.Facilities.Count; i++)
+                                    {
+                                        if (Model.Facilities[i].Category == "Territory")
+                                        {
+                                            <li class="list-unstyled">
+                                                @* @Html.HiddenFor(x => x.Villa.Facilities[i].Id) *@
+                                                @Html.HiddenFor(x => x.Facilities[i].Id)
+                                                @Html.CheckBoxFor(u => Model.Facilities[i].Selected)
+                                                <label class="ms-2"><img width="20" height="20" src="@Model.Facilities[i].Logo" alt="microwave" /> @Model.Facilities[i].Name </label>
+
+                                            </li>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="card col-md-3 mx-3">
+                                <div class="card-title mt-1 text-center fw-bold">
+                                    <img width="25" height="25" src="https://img.icons8.com/ios/50/room.png" alt="room" /> Room
+                                </div>
+                                <div class="card-body">
+                                    @for (int i = 0; i < Model.Facilities.Count; i++)
+                                    {
+                                        if (Model.Facilities[i].Category == "Room")
+                                        {
+                                            <li class="list-unstyled">
+                                                @* @Html.HiddenFor(x => x.Villa.Facilities[i].Id) *@
+                                                @Html.HiddenFor(x => x.Facilities[i].Id)
+                                                @Html.CheckBoxFor(u => Model.Facilities[i].Selected)
+                                                <label class="ms-2"><img width="20" height="20" src="@Model.Facilities[i].Logo" alt="microwave" /> @Model.Facilities[i].Name </label>
+
+                                            </li>
+                                        }
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-2 mt-3 mb-5">
                         <div class="col-6 col-md-3">
                             <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary w-100">
                                 <i class="bi bi-x-circle"></i> Cancel
                             </a>
                         </div>
+                        <div class="col-6 col-md-3">
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="bi bi-check-circle"></i> Update
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="col-2">
-                <img src="@Model.ImageUrl" width="100%"
-                     style="border-radius:5px; border:1px solid #bbb9b9" />
+                @if (Model.Villa.VillaImages != null)
+                {
+                    foreach (var image in Model.Villa.VillaImages)
+                    {
+                        <div class="border p-1 m-2 text-center">
+                            <img src="@image.ImageUrl" width="100%"
+                                 style="border-radius:5px; border:0px solid #bbb9b9" />
+                            <a asp-action="DeleteImage" class="btn btn-danger mt-1" asp-route-imageId="@image.Id" asp-route-villaId="@Model.Villa.Id">
+                                <i class="bi bi-trash-fill"></i> Delete
+
+                            </a>
+                        </div>
+                    }
+                }
             </div>
-           
-        </form>
+        </div>
     </div>
 </div>
+
+
 
 @section Scripts {
     @{

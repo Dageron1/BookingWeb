@@ -24,10 +24,6 @@ namespace VillaProject.Domain.Entities
         [Range(1,10)]
         public int Occupancy { get; set; }
 
-        [NotMapped] //указываем для EF не добавлять эту колонку в БД
-        public IFormFile? Image { get; set; }
-        [Display(Name = "Image Url")] //меняем название для лейбла в HTML
-        public string? ImageUrl { get; set; }
         public DateTime? Created_Date { get; set; }
         public DateTime? Updated_Data { get; set; }
 
@@ -36,5 +32,10 @@ namespace VillaProject.Domain.Entities
 
         [NotMapped] // чтобы не добавлять в БД
         public bool IsAvaliable { get; set; } = true;
+
+        [ValidateNever]
+        public List<VillaImages> VillaImages { get; set; }
+
+        public List<Facility> Facilities { get; set; } = [];
     }
 }

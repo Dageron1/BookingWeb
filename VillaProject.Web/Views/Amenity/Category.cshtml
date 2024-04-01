@@ -1,0 +1,56 @@
+﻿@model CategoryVM
+<section>
+    <div class="container">
+        <div class="w-100 card border-0 p-4 mt-5">
+            <div class="card-header bg-success bg-gradient m-lg-0 py-4">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2 class="text-white py-2">Create Category</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border p-4">
+                @* enctype="multipart/form-data" для загрузки картинок и т д *@
+                <form method="post" class="row" enctype="multipart/form-data">
+                    <div class="p-3 col-12 d-flex">
+                        @*  <div asp-validation-summary="All"></div> *@ @* показываем кастомную валидацию *@
+                        <div class="form-floating py-1 col-7">
+                            <input asp-for="@Model.Category.Name" class="form-control border shadow-sm" />
+                            <label asp-for="@Model.Category.Name" class="ms-2"></label>
+                            <span asp-validation-for="@Model.Category.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3 mx-3 py-1 col-2">
+                            <select asp-items="@Model.CategoryList"
+                                    class="form-select border shadow-sm">
+                                <option disabled selected>--List of Categories--</option>
+                            </select>
+                        </div>
+                        <div class="row pt-2">
+                            
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-circle"></i> Create
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Amenity" asp-action="Index" class="btn btn-secondary w-100">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+        /* partial tag нужен для работы частичных представлений */
+    }
+}

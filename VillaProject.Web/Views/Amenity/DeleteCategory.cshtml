@@ -1,0 +1,53 @@
+﻿@model Category
+
+<div class="w-100 card border-0 p-4 mt-5">
+    <div class="card-header bg-success bg-gradient m-lg-0 py-4">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Delete Category</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <form method="post" class="row">
+            <input hidden asp-for="@Model.Id" />
+            <input hidden asp-for="@Model.Name" />
+
+            <div class="p-3">
+
+                <table class="table table-bordered table-striped w-50">
+                    <tbody>
+
+                        <tr>
+                            
+                            <td>
+                                @Model.Name
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                @*  <div asp-validation-summary="All"></div> *@ @* показываем кастомную валидацию *@
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-check-circle"></i> Delete
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Amenity" asp-action="Index" class="btn btn-secondary w-100">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+        /* partial tag нужен для работы частичных представлений */
+    }
+}

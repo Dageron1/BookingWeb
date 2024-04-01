@@ -6,8 +6,8 @@ namespace VillaProject.Web.Models.ViewModels
 {
     public class AmenityVM
     {
-        public Amenity? Amenity { get; set; }
+        public Facility? Facility { get; set; }
         [ValidateNever]
-        public IEnumerable<SelectListItem> VillaList { get; set; }
+        public IEnumerable<SelectListItem> FacilityList { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace VillaProject.Application.Common.Interfaces
     public interface IRepository<T> where T : class
     {
         //может быть nullable выражение в скобках.
+        //IQuerable  _villaService.GetAll().FirstOrDefault(x => x.Id == villadId); использование снаруижи
         IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool tracked = false);
         //include properties, if we want to include navigational properties
         T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false);

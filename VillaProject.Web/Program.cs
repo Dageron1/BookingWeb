@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
+using Syncfusion.EJ2;
 using Syncfusion.Licensing;
 using System.Globalization;
+using System.Net.NetworkInformation;
 using VillaNumberProject.Application.Services.Implementation;
 using VillaProject.Application.Common.Interfaces;
 using VillaProject.Application.Common.Utility;
@@ -46,9 +48,7 @@ namespace VillaProject.Web
             builder.Services.AddAuthentication().AddGoogle(option =>
             {
                 option.ClientId = configuration["Authentication:Google:ClientId"];
-                //option.ClientId = "488113869637-0bojipl3lmtvsafmndj7u1077p6eiahs.apps.googleusercontent.com";
                 option.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-                //option.ClientSecret = "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";
             });
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddDistributedMemoryCache();
@@ -78,6 +78,9 @@ namespace VillaProject.Web
             builder.Services.AddScoped<IVillaNubmberService, VillaNumberService>();
             builder.Services.AddScoped<IAmenityService, AmenityService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<IFacilityService, FacilityService>();
+            builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
+
             builder.Services.AddRazorPages();
             var app = builder.Build();
             StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();

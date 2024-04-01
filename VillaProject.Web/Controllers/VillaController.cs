@@ -1,9 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using VillaProject.Application.Common.Interfaces;
+using VillaProject.Application.Services.Implementation;
 using VillaProject.Application.Services.Interface;
 using VillaProject.Domain.Entities;
 using VillaProject.Infrastructure.Data;
+using VillaProject.Infrastructure.Repository;
+using VillaProject.Web.Models.ViewModels;
 
 namespace VillaProject.Web.Controllers
 {
@@ -11,10 +16,17 @@ namespace VillaProject.Web.Controllers
     public class VillaController : Controller
     {
         private readonly IVillaService _villaService;
+        private readonly IAmenityService _amenityService;
+        private readonly IFacilityService _facilityService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public VillaController(IVillaService villaService)
+        public VillaController(IVillaService villaService, IWebHostEnvironment webHostEnvironment, IAmenityService amenityService, IFacilityService facilityService)
         {
             _villaService = villaService;
+            _webHostEnvironment = webHostEnvironment;
+            _amenityService = amenityService;
+            _facilityService = facilityService;
+
         }
         public IActionResult Index()
         {
@@ -26,7 +38,7 @@ namespace VillaProject.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Villa obj)
+        public IActionResult Create(Villa obj, List<IFormFile> files)
         {
             if (obj.Name == obj.Description)
             {
@@ -34,7 +46,7 @@ namespace VillaProject.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                _villaService.CreateVilla(obj);
+                _villaService.CreateVilla(obj, files);
                 TempData["success"] = "The villa has been created successfully.";
                 return RedirectToAction(nameof(Index));
             }
@@ -42,21 +54,52 @@ namespace VillaProject.Web.Controllers
         }
         public IActionResult Update(int villaId)
         {
-            Villa? obj = _villaService.GetVillaById(villaId);
+            //Вилла с её fasilities
+            Villa? obj = _villaService.GetVillaById(villaId);  
+
+            var allFacilities = _facilityService.GetAll().Select(x => new FacilityVM
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Logo = x.Logo,
+                Category = x.Category,
+            }).ToList();
+
+            foreach(var oneFacility in allFacilities)
+            {
+                foreach (var oneFacilityFromObj in obj.Facilities)
+                {
+                    if(oneFacility.Name == oneFacilityFromObj.Name)
+                    {
+                        oneFacility.Selected = true;
+                    }
+                }
+            }
+
+            VillaVM villaVM = new()
+            {
+                Villa = obj,
+                //Amenity = _amenityService.GetAllAmenities().Where(x => x.VillaId == villaId).FirstOrDefault(),
+                Facilities = allFacilities
+            };
+            
             if (obj == null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            return View(obj);
+            return View(villaVM);
         }
         [HttpPost]
-        public IActionResult Update(Villa obj)
+        public IActionResult Update(VillaVM obj, List<IFormFile> files)
         {
-            if (ModelState.IsValid && obj.Id > 0)
-            {            
-                _villaService.UpdateVilla(obj);
+            if (ModelState.IsValid && obj.Villa.Id > 0)
+            {
+                var facilities = obj.Facilities.Where(x => x.Selected).Select(x => x.Id).ToArray();
+               
+                _villaService.UpdateVilla(obj.Villa, files, facilities);
+                //_amenityService.UpdateAmenity(obj.Amenity);
                 TempData["success"] = "The villa has been updated successfully.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Update), new { villaId = obj.Villa.Id });
             }
             return View(obj);
         }
@@ -83,6 +126,15 @@ namespace VillaProject.Web.Controllers
                 TempData["error"] = "The villa could not be deleted.";
             }
             return View();
+        }
+
+        public IActionResult DeleteImage(int imageId, int villaId)
+        {
+            _villaService.DeleteVillaImage(imageId, villaId);
+
+            TempData["success"] = "Deleted successfully";
+
+            return RedirectToAction(nameof(Update), new { villaId = villaId });
         }
     }
 }

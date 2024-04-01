@@ -1,58 +1,85 @@
 ﻿@model AmenityVM
-
-<div class="w-100 card border-0 p-4">
-    <div class="card-header bg-success bg-gradient m-lg-0 py-4">
+<section>
+    <div class="container">
         <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">Update Amenity</h2>
+            <div class="col-md-12 border-0 p-4 mt-5">
+                <div class="bg-success bg-gradient m-lg-0 py-4">
+                    <div class="col-12 text-center">
+                        <h2 class="text-white py-2">Update Facility</h2>
+                    </div>
+                </div>
+                <div class="border p-4 col-md-12">
+                    <form method="post" class="row">
+                        <input asp-for="@Model.Facility.Id" hidden /> 
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <td class="text-center fw-bold">
+                                        Logo img
+                                    </td>
+                                    <td class="fw-bold">
+                                        Logo src
+                                    </td>
+                                    <td class ="fw-bold">
+                                        Name
+                                    </td>
+                                    <td class="fw-bold">
+                                        Category
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td class="text-center">
+                                        <label class="p-1"><img width="30" height="30" src="@Model.Facility.Logo" alt="microwave" /></label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.Facility.Logo" class="form-control border shadow-sm" />
+                                        <span asp-validation-for="@Model.Facility.Logo" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.Facility.Name" class="form-control border shadow-sm" />
+                                        <span asp-validation-for="@Model.Facility.Name" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <select asp-for="@Model.Facility.Category" asp-items="@Model.FacilityList"
+                                                class="form-select border shadow-sm">
+                                            <option disabled selected>--Select Category--</option>
+                                        </select>
+                                        @* <label asp-for="@Model.Facility.Id" class="ms-2">Category</label> *@
+                                        <span asp-validation-for="@Model.Facility.Id" class="text-danger"></span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                           
+                            <hr />
+
+                            <div class="row d-flex justify-content-center">
+                                <div class="row mt-3 pt-2 justify-content-center">
+                                    <div class="col-6 col-md-3">
+                                        <button type="submit" class="btn btn-success w-100">
+                                            <i class="bi bi-check-circle"></i> Update
+                                        </button>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <a asp-controller="Amenity" asp-action="Index" class="btn btn-secondary w-100">
+                                            <i class="bi bi-x-circle"></i> Cancel
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card-body border p-4">
-        <form method="post" class="row">
-            <input hidden asp-for="Amenity.Id" />
-            <div class="p-3">
-                @*  <div asp-validation-summary="All"></div> *@ @* показываем кастомную валидацию *@
-                <div class="form-floating py-1 col-12">
-                    @* специальный asp-items Доступен в блоке select
-                    Происходит следующее: ViewData получает из контроллера все виллы с названием Name(это ключи), и Value(VillaId) и далее в блоке select на сайте
-                    если мы выбираем виллу с каким-то названием, то в asp-for="@Model.VillaId" добавляется нужное нам значение которое связано с ключем Name.
 
-                    <select asp-for="@Model.VillaId" asp-items="@ViewData["VillaList"] as IEnumerable<SelectListItem>" *@
-
-                    <select asp-for="@Model.Amenity.VillaId" asp-items="@Model.VillaList"
-                            class="form-select border shadow">
-                        <option disabled selected>--Select Villa--</option>
-                    </select>
-                    <label asp-for="Amenity.VillaId" class="ms-2"></label>
-                    <span asp-validation-for="Amenity.VillaId" class="text-danger"></span>
-                </div>
-                <div class="form-floating py-1 col-12">
-                    <input asp-for="Amenity.Name" class="form-control border shadow" />
-                    <label asp-for="Amenity.Name" class="ms-2"></label>
-                    <span asp-validation-for="Amenity.Name" class="text-danger"></span>
-                </div>
-                <div class="form-floating py-1 col-12">
-                    <input asp-for="Amenity.Description" class="form-control border shadow" />
-                    <label asp-for="Amenity.Description" class="ms-2"></label>
-                    <span asp-validation-for="Amenity.Description" class="text-danger"></span>
-                </div>
-                <div class="row pt-2">
-                    <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-success w-100">
-                            <i class="bi bi-check-circle"></i> Update
-                        </button>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a asp-controller="Amenity" asp-action="Index" class="btn btn-secondary w-100">
-                            <i class="bi bi-x-circle"></i> Cancel
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
-</div>
+</section>
+
+
 
 @section Scripts {
     @{

@@ -13,8 +13,41 @@ namespace VillaProject.Domain.Entities
     {
         [Key]
         public int Id { get; set; }
-        public required string Name { get; set; }
-        public string? Description { get; set; }
+        public string? Name { get; set; }
+        //public string? Description { get; set; }
+
+        //Amenities list
+        //Kitchen && Cooking
+        public bool Microwave { get; set; }
+        
+        public bool Freezer { get; set; }
+        public bool Kitchen { get; set; }
+        public bool Restaurant { get; set; }
+        public bool DeliveryService { get; set; }
+        public bool Breakfast { get; set; }
+
+        //Media
+        public bool Wifi { get; set; }
+        public bool HDTV { get; set; }
+
+        //Territory
+        public bool Parking { get; set; }
+        public bool Pool { get; set; }
+        public bool GardenView { get; set; }
+        public bool MountainView { get; set; }
+        public bool OceanView { get; set; }
+
+
+        //Room
+        public bool KingBed { get; set; }
+        public bool Balcony { get; set; }
+        public bool AC { get; set; }
+        public bool Safe { get; set; }   
+        public bool Heating { get; set; }
+ 
+        public bool SelfCheckIn { get; set; }
+
+
 
         //т е VillaId будет внешним ключем для Villa,  и он будет соответствовать главному ключу таблицы Villas в БД
         [ForeignKey("Villa")] //foreign key relation to the table - обозначаем внешний ключ (тут указывается главный ключ от другой таблицы)

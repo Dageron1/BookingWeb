@@ -22,6 +22,21 @@ namespace VillaProject.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FacilityVilla", b =>
+                {
+                    b.Property<int>("FacilitiesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VillasId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FacilitiesId", "VillasId");
+
+                    b.HasIndex("VillasId");
+
+                    b.ToTable("FacilityVilla");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -74,7 +89,432 @@ namespace VillaProject.Infrastructure.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("VillaProject.Domain.Entities.Amenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AC")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Balcony")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Breakfast")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("DeliveryService")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Freezer")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("GardenView")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HDTV")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Heating")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("KingBed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Kitchen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Microwave")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MountainView")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OceanView")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Parking")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Pool")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Restaurant")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Safe")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SelfCheckIn")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("VillaId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Wifi")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VillaId");
+
+                    b.ToTable("Amenities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 1,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 1,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 1,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 1,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 2,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 2,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 2,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 2,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 3,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 3,
+                            Wifi = false
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AC = false,
+                            Balcony = false,
+                            Breakfast = false,
+                            DeliveryService = false,
+                            Freezer = false,
+                            GardenView = false,
+                            HDTV = false,
+                            Heating = false,
+                            KingBed = false,
+                            Kitchen = false,
+                            Microwave = false,
+                            MountainView = false,
+                            OceanView = false,
+                            Parking = false,
+                            Pool = false,
+                            Restaurant = false,
+                            Safe = false,
+                            SelfCheckIn = false,
+                            VillaId = 3,
+                            Wifi = false
+                        });
+                });
+
+            modelBuilder.Entity("VillaProject.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -86,10 +526,8 @@ namespace VillaProject.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -103,6 +541,9 @@ namespace VillaProject.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -142,184 +583,6 @@ namespace VillaProject.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("VillaProject.Domain.Entities.Amenity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VillaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VillaId");
-
-                    b.ToTable("Amenities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Private Pool",
-                            VillaId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Microwave",
-                            VillaId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Private Balcony",
-                            VillaId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "1 king bed and 1 sofa bed",
-                            VillaId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Private Plunge Pool",
-                            VillaId = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Microwave and Mini Refrigerator",
-                            VillaId = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Private Balcony",
-                            VillaId = 2
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "king bed or 2 double beds",
-                            VillaId = 2
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Private Pool",
-                            VillaId = 3
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Jacuzzi",
-                            VillaId = 3
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Private Balcony",
-                            VillaId = 3
-                        });
                 });
 
             modelBuilder.Entity("VillaProject.Domain.Entities.Booking", b =>
@@ -396,6 +659,48 @@ namespace VillaProject.Infrastructure.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("VillaProject.Domain.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("VillaProject.Domain.Entities.Facility", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Facilities");
+                });
+
             modelBuilder.Entity("VillaProject.Domain.Entities.Villa", b =>
                 {
                     b.Property<int>("Id")
@@ -408,9 +713,6 @@ namespace VillaProject.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -439,7 +741,6 @@ namespace VillaProject.Infrastructure.Migrations
                         {
                             Id = 1,
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
-                            ImageUrl = "https://placehold.co/600x400",
                             Name = "Royal Villa",
                             Occupancy = 4,
                             Price = 200.0,
@@ -449,7 +750,6 @@ namespace VillaProject.Infrastructure.Migrations
                         {
                             Id = 2,
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
-                            ImageUrl = "https://placehold.co/600x401",
                             Name = "Premium Pool Villa",
                             Occupancy = 4,
                             Price = 300.0,
@@ -459,12 +759,33 @@ namespace VillaProject.Infrastructure.Migrations
                         {
                             Id = 3,
                             Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
-                            ImageUrl = "https://placehold.co/600x402",
                             Name = "Luxury Pool Villa",
                             Occupancy = 4,
                             Price = 400.0,
                             Sqft = 750
                         });
+                });
+
+            modelBuilder.Entity("VillaProject.Domain.Entities.VillaImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VillaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VillaId");
+
+                    b.ToTable("VillaImages");
                 });
 
             modelBuilder.Entity("VillaProject.Domain.Entities.VillaNumber", b =>
@@ -532,18 +853,19 @@ namespace VillaProject.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("VillaProject.Domain.Entities.ApplicationUser", b =>
+            modelBuilder.Entity("FacilityVilla", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.ApplicationUser");
+                    b.HasOne("VillaProject.Domain.Entities.Facility", null)
+                        .WithMany()
+                        .HasForeignKey("FacilitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
+                    b.HasOne("VillaProject.Domain.Entities.Villa", null)
+                        .WithMany()
+                        .HasForeignKey("VillasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -555,25 +877,25 @@ namespace VillaProject.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", null)
+                    b.HasOne("VillaProject.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", null)
+                    b.HasOne("VillaProject.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
@@ -581,16 +903,16 @@ namespace VillaProject.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", null)
+                    b.HasOne("VillaProject.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", null)
+                    b.HasOne("VillaProject.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -610,7 +932,7 @@ namespace VillaProject.Infrastructure.Migrations
 
             modelBuilder.Entity("VillaProject.Domain.Entities.Booking", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", "User")
+                    b.HasOne("VillaProject.Domain.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -623,6 +945,17 @@ namespace VillaProject.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+
+                    b.Navigation("Villa");
+                });
+
+            modelBuilder.Entity("VillaProject.Domain.Entities.VillaImages", b =>
+                {
+                    b.HasOne("VillaProject.Domain.Entities.Villa", "Villa")
+                        .WithMany("VillaImages")
+                        .HasForeignKey("VillaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Villa");
                 });
@@ -641,6 +974,8 @@ namespace VillaProject.Infrastructure.Migrations
             modelBuilder.Entity("VillaProject.Domain.Entities.Villa", b =>
                 {
                     b.Navigation("VillaAmenity");
+
+                    b.Navigation("VillaImages");
                 });
 #pragma warning restore 612, 618
         }

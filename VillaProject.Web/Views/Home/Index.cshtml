@@ -1,88 +1,131 @@
-﻿@model HomeVM
+﻿@using Syncfusion.EJ2
+@using Syncfusion.EJ2.SplitButtons;
+@model HomeVM
 
+
+
+@{
+    ProgressButtonSpinSettings spinRight = new ProgressButtonSpinSettings() { Position = SpinPosition.Right };
+    ProgressButtonSpinSettings spinTop = new ProgressButtonSpinSettings() { Position = SpinPosition.Top };
+    ProgressButtonSpinSettings spinBottom = new ProgressButtonSpinSettings() { Position = SpinPosition.Bottom };
+    ProgressButtonSpinSettings spinCenter = new ProgressButtonSpinSettings() { Position = SpinPosition.Center };
+
+    ProgressButtonAnimationSettings slideLeft = new ProgressButtonAnimationSettings() { Effect = AnimationEffect.SlideLeft };
+    ProgressButtonAnimationSettings slideRight = new ProgressButtonAnimationSettings() { Effect = AnimationEffect.SlideRight };
+    ProgressButtonAnimationSettings zoomIn = new ProgressButtonAnimationSettings() { Effect = AnimationEffect.ZoomIn };
+    ProgressButtonAnimationSettings zoomOut = new ProgressButtonAnimationSettings() { Effect = AnimationEffect.ZoomOut };
+}
 <div>
-    <div id="carouselExampleIndicators" class="carousel slide">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+    @if (!User.IsInRole(SD.Role_Admin))
+    {
+        <div id="carouselExampleIndicators" class="carousel slide">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="~/images/slide2.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="~/images/slide1.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="~/images/slide3.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="~/images/slide4.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="~/images/slide5.jpg" class="d-block w-100" alt="...">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="~/images/slide2.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="~/images/slide1.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="~/images/slide3.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="~/images/slide4.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="~/images/slide5.jpg" class="d-block w-100" alt="...">
-            </div>
+
+    }
+    else
+    {
+        <div class="mb-5">
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
+    }
+
+
+
     @* ajax запрос берет результат метода GetVillasByDate готовое частичное представление, и именно его только меняет.
     он отлавливает готовое частичное представление и подставляет его вместо старого ???
     !!!AJAX работает иначе: вместо того чтобы синхронно загружать новые данные с новой страницей,
     !!!он запрашивает у сервера недостающую информацию и добавляет её на страницу. А сама страница не перезагружается.
     Отправляется вместе с основным запросом, и ловит созданное частичное представление и вставляет этот блок инфы вместо старого. Заменяет по id = VillasList
     *@
-    <form method="post" style="background-color:black;"
-          asp-action="GetVillasByDate">
-        @* data-ajax-method="post" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#VillasList"> *@
+    <form method="post"
+          asp-action="GetVillasByDate" data-ajax-method="post" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#VillasList">
+        <div class="container">
+            <div class="row p-0 mx-0 py-4 mt-3">
 
-        <div class="row p-0 mx-0 py-4">
+                <div class="col-12 col-md-6  offset-md-2 pl-2  pr-2 pr-md-0">
+                    <div class="form-group">
+                        <label class="fw-bold">Check In Date</label>
+                        @* <input asp-for="CheckInDate" type="date" class="form-control datepicker" /> *@ @*this was the way before*@
+                        <div class="control-section">
+                            <div id="wrapper" class="daterangepicker-section">
+                                <div id="daterangepicker-control">
+                                    @{
+                                        var min = DateOnly.FromDateTime(DateTime.Now);
+                                        var max = min.AddYears(1);
+                                    }
+                                    <ejs-daterangepicker id="daterangepicker" name="value" min="min" max="max" ejs-for="dateRange.value" placeholder="Choose a Range"></ejs-daterangepicker>
+                                    <div id="errorMessage">
+                                        <span asp-validation-for="dateRange.value"></span>
+                                    </div>
+                                    <ejs-button id="submitButton" hidden content="Submit"></ejs-button>
 
-            <div class="col-12 col-md-5  offset-md-1 pl-2  pr-2 pr-md-0">
-                <div class="form-group">
-                    <label>Check In Date</label>
-                    <input asp-for="CheckInDate" type="date" class="form-control" />
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-8 col-md-3 pl-2 pr-2">
-                <div class="form-group">
-                    <label>No. of nights</label>
-                    <select class="form-select" asp-for="Nights">
-                        @for (var i = 1; i < 11; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
+                <div class="col-md-3 mt-3" id="submitbutton">
+                    @*  <button class="btn btn-primary" type="submit">Check Availability</button> *@
+                    <div class="control-section mt-2">
+                        <div class="progress-button-section">
+                            <div id="progress-button-control">
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
+                                        <ejs-progressbutton id="spinright" content="Check Availability" type="submit" isPrimary="true" spinSettings="spinRight"></ejs-progressbutton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-4 col-md-2 pt-4 pr-2">
-                <div class="form-group">
-                    <button type="button" onclick="fnLoadVillaList()" class="btn btn-success btn-block">
-                        <i class="bi bi-search"></i>  &nbsp; Check Availability
-                    </button>
 
-                </div>
             </div>
 
         </div>
-        @*  @Model = HomeVM *@
-        <partial name="_VillaList" model="@Model" />
+
 
     </form>
+    <partial name="_VillaList" model="@Model" />
 </div>
 
-@section scripts {
+
+@* @section scripts {
     <script>
         function fnLoadVillaList() {
             $('.spinner').show();
@@ -109,7 +152,7 @@
                     alert(response.responceText);
                 }
             });
-        }  
+        }
     </script>
-}
+} *@
 

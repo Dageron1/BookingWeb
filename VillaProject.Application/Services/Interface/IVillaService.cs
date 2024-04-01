@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VillaProject.Domain.Entities;
+using VillaProject.Web.Models.ViewModels;
 
 namespace VillaProject.Application.Services.Interface
 {
-    public interface IVillaService
+    public interface IFacilityService
     {
-        IEnumerable<Villa> GetAllVillas();
-        Villa GetVillaById(int id);
-        void CreateVilla(Villa villa); //можно вместо void использовать ResponseDTO который показывают всю инфу про этот метод.
-        void UpdateVilla(Villa villa);
-        bool DeleteVilla(int id);
-
-        IEnumerable<Villa> GetVillasAvailabilityByDate(int nights, DateOnly checkInDate);
-        bool IsVillaAvailableByDate(int villaId, int nights, DateOnly checkInDate);
+        IEnumerable<Facility> GetAll();
+        IEnumerable<Category> GetAllCategories();
+        bool DeleteFacilities(int villaId);
+        bool AddNewFacility(Facility facility);
+        void DeleteFacilityInDb(Facility obj);
+        void UpdateFacility(Facility obj);
+        bool AddCategory(Category obj);
+        void DeleteCategory(Category obj);
     }
 }

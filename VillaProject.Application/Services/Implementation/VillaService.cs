@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,29 +29,45 @@ namespace VillaProject.Application.Services.Implementation
         }
 
 
-        public void CreateVilla(Villa villa)
+        public void CreateVilla(Villa villa, List<IFormFile> files)
         {
-            if (villa.Image != null)
+            if (files != null)
             {
-                //we can retrieve the extension of the image that was uploaded, так же можно на этом этапе добавить валидацию изображения.
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(villa.Image.FileName);
-                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\VillaImage");
-
-                using (var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create)) //на этом этапе оно создает "пустую белую картинку"
+                foreach (IFormFile file in files)
                 {
-                    villa.Image.CopyTo(fileStream); //на этом этапе уже заполняет картинку информацией
-                }
-                villa.ImageUrl = @"\images\VillaImage\" + fileName;
-            }
-            else
-            {
-                villa.ImageUrl = "https://placeholder.co/600x400";
-            }
+                    //we can retrieve the extension of the image that was uploaded, так же можно на этом этапе добавить валидацию изображения.
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string villaPath = @"images\villas\villa-" + villa.Id;
+                    string finalPath = Path.Combine(_webHostEnvironment.WebRootPath, villaPath);
 
+                    var fileFull = Path.Combine(finalPath, fileName);
+
+                    if (!Directory.Exists(finalPath))
+                        Directory.CreateDirectory(finalPath);
+
+                    using (var fileStream = new FileStream(fileFull, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    VillaImages villaImages = new()
+                    {
+                        ImageUrl = @"\" + villaPath + @"\" + fileName,
+                        VillaId = villa.Id,
+                    };
+
+                    if (villa.VillaImages == null)
+                        //избегаем исключения, если картинка не выбрана. Инициализируя
+                        villa.VillaImages = new List<VillaImages>();
+
+                    villa.VillaImages.Add(villaImages);
+                }
+            }
 
             _unitOfWork.Villa.Add(villa);
             _unitOfWork.Save();
         }
+
 
         public bool DeleteVilla(int id)
         {
@@ -59,34 +76,71 @@ namespace VillaProject.Application.Services.Implementation
                 Villa? objFromDb = _unitOfWork.Villa.Get(u => u.Id == id);
                 if (objFromDb is not null)
                 {
-                    if (!string.IsNullOrEmpty(objFromDb.ImageUrl))
-                    {
-                        var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, objFromDb.ImageUrl.TrimStart('\\'));
+                    string villaPath = @"images\villas\villa-" + id;
+                    string finalPath = Path.Combine(_webHostEnvironment.WebRootPath, villaPath);
 
-                        if (System.IO.File.Exists(oldImagePath))
+                    if (Directory.Exists(finalPath))
+                    {
+                        string[] filePaths = Directory.GetFiles(finalPath);
+                        foreach (string filePath in filePaths)
                         {
-                            System.IO.File.Delete(oldImagePath);
+                            System.IO.File.Delete(filePath);
                         }
+
+                        Directory.Delete(finalPath);
                     }
+
                     _unitOfWork.Villa.Remove(objFromDb);
                     _unitOfWork.Save();
                 }
                 return true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
-            } 
+            }
+
         }
+
+        public bool DeleteVillaImage(int imageId, int villaId)
+        {
+            try
+            {
+                var villaImages = _unitOfWork.Villa.Get(x => x.Id == villaId, includeProperties: "VillaImages").VillaImages;
+                var imageToDelete = villaImages.FirstOrDefault(x => x.Id == imageId);
+
+                if (imageToDelete != null)
+                {
+                    var oldImagePath =
+                                   Path.Combine(_webHostEnvironment.WebRootPath,
+                                   imageToDelete.ImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+
+                    _unitOfWork.VillaImage.Remove(imageToDelete);
+                    _unitOfWork.Save();
+                }
+                return true;    
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+            
+        
 
         public IEnumerable<Villa> GetAllVillas()
         {
-            return _unitOfWork.Villa.GetAll(includeProperties: "VillaAmenity");
+            return _unitOfWork.Villa.GetAll(includeProperties: "VillaAmenity,VillaImages,Facilities");
         }
 
         public Villa GetVillaById(int id)
         {
-            return _unitOfWork.Villa.Get(u =>u.Id == id, includeProperties: "VillaAmenity");
+            return _unitOfWork.Villa.Get(u => u.Id == id, includeProperties: "VillaAmenity,VillaImages,Facilities");
         }
 
         public IEnumerable<Villa> GetVillasAvailabilityByDate(int nights, DateOnly checkInDate)
@@ -118,7 +172,7 @@ namespace VillaProject.Application.Services.Implementation
             //    Nights = nights,
             //};
 
-            var villaList = _unitOfWork.Villa.GetAll(includeProperties: "VillaAmenity");
+            var villaList = _unitOfWork.Villa.GetAll(includeProperties: "Facilities,VillaImages");
             var villaNumbersList = _unitOfWork.VillaNumber.GetAll().ToList();
             var bookedVillas = _unitOfWork.Booking.GetAll(u => u.Status == SD.StatusApproved || u.Status == SD.StatusCheckedIn).ToList();
 
@@ -143,32 +197,63 @@ namespace VillaProject.Application.Services.Implementation
             return roomsAvaliable > 0;
         }
 
-        public void UpdateVilla(Villa villa)
+        public void UpdateVilla(Villa villa, List<IFormFile> files, int[] selectFacilitiesIds)
         {
-            if (villa.Image != null)
+            var villaFromDb = _unitOfWork.Villa.Get(x => x.Id == villa.Id, includeProperties: "Facilities", tracked: true);
+
+            var facilitiesFromDb = _unitOfWork.Facility.GetAll();
+
+            villaFromDb.Facilities.RemoveAll(x => !selectFacilitiesIds.Contains(x.Id)); //Delete choosen!!! facility if facilitiesIds not contains any villaFromDb.Facilities.Id
+
+            //compares the first collection with the second and removes from the first array the data that is in the second array
+            //then take all facilities based on facilities id.
+            var newFacilities = selectFacilitiesIds.Except(villaFromDb.Facilities.Select(x => x.Id)).Select(u => facilitiesFromDb.FirstOrDefault(x => x.Id == u));
+
+            villaFromDb.Facilities.AddRange(newFacilities);
+
+            villaFromDb.Description = villa.Description;
+            villaFromDb.Name = villa.Name;
+            villaFromDb.Occupancy = villa.Occupancy;
+            villaFromDb.Sqft = villa.Sqft;
+            villaFromDb.Price = villa.Price;
+
+            if (files != null)
             {
-                //we can retrieve the extension of the image that was uploaded, так же можно на этом этапе добавить валидацию изображения.
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(villa.Image.FileName);
-                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\VillaImage");
-
-                if (!string.IsNullOrEmpty(villa.ImageUrl))
+                foreach (IFormFile file in files)
                 {
-                    var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, villa.ImageUrl.TrimStart('\\'));
+                    //we can retrieve the extension of the image that was uploaded, так же можно на этом этапе добавить валидацию изображения.
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string villaPath = @"images\villas\villa-" + villa.Id;
+                    string finalPath = Path.Combine(_webHostEnvironment.WebRootPath, villaPath);
 
-                    if (System.IO.File.Exists(oldImagePath))
+                    var fileFull = Path.Combine(finalPath, fileName);
+
+                    if (!Directory.Exists(finalPath))
+                        Directory.CreateDirectory(finalPath);
+
+                    using (var fileStream = new FileStream(fileFull, FileMode.Create))
                     {
-                        System.IO.File.Delete(oldImagePath);
+                        file.CopyTo(fileStream);
                     }
-                }
 
-                using (var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create)) //на этом этапе оно создает "пустую белую картинку"
-                {
-                    villa.Image.CopyTo(fileStream); //на этом этапе уже заполняет картинку информацией
+                    VillaImages villaImages = new()
+                    {
+                        ImageUrl = @"\" + villaPath + @"\" + fileName,
+                        VillaId = villa.Id,
+                    };
+
+                    if (villa.VillaImages == null)
+                        //избегаем исключения, если картинка не выбрана. Инициализируя
+                        villaFromDb.VillaImages = new List<VillaImages>();
+
+
+                    villaFromDb.VillaImages.Add(villaImages);
+                   
                 }
-                villa.ImageUrl = @"\images\VillaImage\" + fileName;
             }
-            _unitOfWork.Villa.Update(villa);
+            _unitOfWork.Villa.Update(villaFromDb);
             _unitOfWork.Save();
         }
+
     }
 }

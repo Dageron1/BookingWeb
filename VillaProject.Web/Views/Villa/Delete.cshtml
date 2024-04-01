@@ -34,8 +34,9 @@
                     <label asp-for="Occupancy" class="ms-2"></label>
                 </div>
                 <div class="form-floating py-1 col-12">
-                    <input asp-for="ImageUrl" disabled class="form-control border shadow" />
-                    <label asp-for="ImageUrl" class="ms-2"></label>
+                        <input type="file" name="files" class="form-control border-0 shadow" multiple />
+                        <label asp-for="VillaImages" class="ms-2"></label>
+                        <span asp-validation-for="VillaImages" class="text-danger"></span>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
@@ -52,7 +53,7 @@
             </div>
             </div>
             <div class="col-2">
-                <img src="@Model.ImageUrl" width="100%"
+                <img src="@Model.VillaImages.FirstOrDefault()" width="100%"
                      style="border-radius:5px; border:1px solid #bbb9b9" />
             </div>
         </form>

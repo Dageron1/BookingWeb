@@ -1,54 +1,231 @@
-﻿@model IEnumerable<Amenity>
+﻿@model IEnumerable<Facility>
 
-<div class="w-100 card border-0 p-4">
+<div class="w-100 card border-0 p-4 mt-5">
     <div class="card-header bg-success bg-gradient m-lg-0 py-4">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Amenity List</h2>
+                <h2 class="text-white py-2">Edit Facilities</h2>
             </div>
         </div>
     </div>
-    <div class="card-body border p-3">
+    <div class="card-body border p-3 mb-5">
         <div class="row pb-3">
             <div class="col-6 offset-6 text-end">
+                <a asp-controller="Amenity" asp-action="CategoryList" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Delete Category
+                </a>
+                <a asp-controller="Amenity" asp-action="Category" class="btn btn-warning">
+                    <i class="bi bi-list-check"></i> Create New Category
+                </a>
                 <a asp-controller="Amenity" asp-action="Create" class="btn btn-secondary">
-                    <i class="bi bi-plus-circle"></i> Create New Amenity
+                    <i class="bi bi-plus-circle"></i> Create New Facility
                 </a>
             </div>
         </div>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Villa Name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in Model)
-                {
-                    <tr>
-                        <td>@obj.Id</td>
-                        <td>@obj.Name</td>
-                        <td>@obj.Villa.Name</td>
-                        <td>
-                            <div class="w-75 btn-group" rold="group">
-                                <a asp-controller="Amenity" asp-action="Update" asp-route-amenityId="@obj.Id"
-                                   class="btn btn-success mx-2">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <a asp-controller="Amenity" asp-action="Delete" asp-route-amenityId="@obj.Id"
-                                   class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash-fill"></i> Delete
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
 
-        </table>
+        <div class="container mt-4 mb-5">
+            <div class="row">
+                <div class="card col-md-3 mx-3">
+                    <div class="card-title mt-1 text-center fw-bold">
+                        <img width="25" height="25" src="https://img.icons8.com/windows/32/cooking.png" alt="cooking" /> Cooking
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                                @foreach (var facility in Model)
+                                {
+                                    @if (facility.Category == "Cooking")
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label class="ms-2"><img width="20" height="20" src="@facility.Logo" /> @facility.Name </label>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Amenity" asp-action="Update" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-success btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+                                                <a asp-controller="Amenity" asp-action="Delete" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card col-md-3 mx-3">
+                    <div class="card-title mt-1 text-center fw-bold">
+                        <img width="25" height="25" src="https://img.icons8.com/pastel-glyph/64/fast-food--v2.png" alt="fast-food--v2" /> Food & Eat
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                                @foreach (var facility in Model)
+                                {
+                                    @if (facility.Category == "Food")
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label class="ms-2"><img width="20" height="20" src="@facility.Logo" /> @facility.Name </label>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Amenity" asp-action="Update" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-success btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+                                                <a asp-controller="Amenity" asp-action="Delete" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card col-md-3 mx-3">
+                    <div class="card-title mt-1 text-center fw-bold">
+                        <img width="25" height="25" src="https://img.icons8.com/ios/50/internet--v1.png" alt="internet--v1" /> Internet
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                                @foreach (var facility in Model)
+                                {
+                                    @if (facility.Category == "Internet")
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label class="ms-2"><img width="20" height="20" src="@facility.Logo" /> @facility.Name </label>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Amenity" asp-action="Update" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-success btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+                                                <a asp-controller="Amenity" asp-action="Delete" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 mb-5">
+                <div class="card col-md-3 mx-3">
+                    <div class="card-title mt-1 text-center fw-bold">
+                        <img width="25" height="25" src="https://img.icons8.com/ios/50/mountain-city.png" alt="mountain-city" /> View
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                                @foreach (var facility in Model)
+                                {
+                                    @if (facility.Category == "View")
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label class="ms-2"><img width="20" height="20" src="@facility.Logo" /> @facility.Name </label>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Amenity" asp-action="Update" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-success btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+                                                <a asp-controller="Amenity" asp-action="Delete" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card col-md-3 mx-3">
+                    <div class="card-title mt-1 text-center fw-bold">
+                        <img width="25" height="25" src="https://img.icons8.com/ios/50/place-marker--v1.png" alt="place-marker--v1" /> Territory
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                                @foreach (var facility in Model)
+                                {
+                                    @if (facility.Category == "Territory")
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label class="ms-2"><img width="20" height="20" src="@facility.Logo" /> @facility.Name </label>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Amenity" asp-action="Update" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-success btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+                                                <a asp-controller="Amenity" asp-action="Delete" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card col-md-3 mx-3">
+                    <div class="card-title mt-1 text-center fw-bold">
+                        <img width="25" height="25" src="https://img.icons8.com/ios/50/room.png" alt="room" /> Room
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                                @foreach (var facility in Model)
+                                {
+                                    @if (facility.Category == "Room")
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label class="ms-2"><img width="20" height="20" src="@facility.Logo" /> @facility.Name </label>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Amenity" asp-action="Update" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-success btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </a>
+                                                <a asp-controller="Amenity" asp-action="Delete" asp-route-facilityId="@facility.Id"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+           
+
+        </div>
     </div>
 </div>
 
