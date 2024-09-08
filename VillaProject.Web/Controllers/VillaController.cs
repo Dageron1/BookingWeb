@@ -32,6 +32,7 @@ namespace VillaProject.Web.Controllers
         {
             var villas = _villaService.GetAllVillas();
             return View(villas);
+
         }
         public IActionResult Create()
         {
