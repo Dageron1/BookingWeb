@@ -30,7 +30,7 @@ namespace VillaProject.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+            // использование Fluent API
             base.OnModelCreating(modelBuilder);
             
 

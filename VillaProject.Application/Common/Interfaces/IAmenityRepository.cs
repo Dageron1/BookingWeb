@@ -7,9 +7,9 @@ using VillaProject.Domain.Entities;
 
 namespace VillaProject.Application.Common.Interfaces
 {
-    public interface IVillaNumberRepository : IRepository<VillaNumber>
+    public interface IAmenityRepository : IRepository<Amenity>
     {
-        void Update(VillaNumber entity);
+        void Update(Amenity entity);
 
     }
 }

@@ -20,6 +20,7 @@ namespace VillaProject.Infrastructure.Repository
         {
             _db = db;
             //до этого создавали на прямую указывая таблицу. Сейчас можно любую использовать.
+            //чтобы не писать вот так _db.Set<Villa>() т к работаем с дженерик репозиторией
             dbSet = _db.Set<T>();
         }
 
