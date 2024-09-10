@@ -38,8 +38,8 @@ namespace VillaProject.Infrastructure.Data
                   new Villa
                   {
                       Id = 1,
-                      Name = "Royal Villa",
-                      Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
+                      Name = "Best Villa",
+                      Description = "Only for rich person",
                       Occupancy = 4,
                       Price = 200,
                       Sqft = 550,
@@ -47,20 +47,20 @@ namespace VillaProject.Infrastructure.Data
                  new Villa
                  {
                       Id = 2,
-                      Name = "Premium Pool Villa",
-                      Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
+                      Name = "Premium House",
+                      Description = "Premium villa.",
                       Occupancy = 4,
                       Price = 300,
-                      Sqft = 550,
+                      Sqft = 1550,
                  },
                  new Villa
                  {
                       Id = 3,
-                      Name = "Luxury Pool Villa",
-                      Description = "Fusce 11 tincidunt maximus leo, sed scelerisque massa auctor sit amet. Donec ex mauris, hendrerit quis nibh ac, efficitur fringilla enim.",
+                      Name = "Luxury Pool",
+                      Description = "Empty description.",
                       Occupancy = 4,
-                      Price = 400,
-                      Sqft = 750,
+                      Price = 1400,
+                      Sqft = 1750,
                  });
             modelBuilder.Entity<VillaNumber>().HasData(
                 new VillaNumber
