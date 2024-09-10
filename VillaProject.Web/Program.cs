@@ -37,13 +37,13 @@ namespace VillaProject.Web
             });
             builder.Services.AddAuthentication().AddFacebook(option =>
             {
-                option.AppId = "1602885163848476";
-                option.AppSecret = "cc07d367b9d298ff6a3c9bca2f2f5a90";
+                option.AppId = configuration["Authentication:Facebook:AppId"];
+                option.AppSecret = configuration["Authentication:Facebook:AppSecret"];
             });
             builder.Services.AddAuthentication().AddMicrosoftAccount(option =>
             {
-                option.ClientId = "8d45481b-bfc0-41b5-9d16-91ba69621f18";
-                option.ClientSecret = "22L8Q~5bgWDUIF7eD_IohdF5s1PJsqfQvxpdEdtC";
+                option.ClientId = configuration["Authentication:Microsoft:ClientId"];
+                option.ClientSecret = configuration["Authentication:Microsoft:ClientSecret"];
             });
             builder.Services.AddAuthentication().AddGoogle(option =>
             {
